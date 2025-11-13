@@ -38,9 +38,6 @@ public class StudentService {
         existing.setNbeneficia(updated.getNbeneficia());
         existing.setSexo(updated.getSexo());
         existing.setDatanascim(updated.getDatanascim());
-        existing.setBinum(updated.getBinum());
-        existing.setBiemissao(updated.getBiemissao());
-        existing.setBidata(updated.getBidata());
         existing.setProfissao(updated.getProfissao());
         existing.setEstadocivi(updated.getEstadocivi());
         existing.setTelemovel(updated.getTelemovel());

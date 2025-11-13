@@ -60,9 +60,6 @@ public class StudentDataInitializer {
         LocalDate birthDate = LocalDate.of(1980 + (index % 25), ((index - 1) % 12) + 1, ((index - 1) % 28) + 1);
         student.setDatanascim(birthDate);
 
-        student.setBinum(String.format("ID%06d", 100000 + index));
-        student.setBiemissao(String.format("Municipio %02d", (index % 18) + 1));
-        student.setBidata(birthDate.plusYears(18));
         student.setProfissao(PROFESSIONS[index % PROFESSIONS.length]);
         student.setEstadocivi(index % 3 == 0 ? Student.EstadoCivil.CASADO : Student.EstadoCivil.SOLTEIRO);
         student.setTelemovel(String.format("9%08d", 10000000 + index));

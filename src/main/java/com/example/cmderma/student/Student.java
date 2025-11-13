@@ -49,15 +49,6 @@ public class Student {
     @Column(name = "data_nascim")
     private LocalDate datanascim;
 
-    @Column(name = "binum", length = 50)
-    private String binum;
-
-    @Column(name = "biemissao", length = 50)
-    private String biemissao;
-
-    @Column(name = "bidata")
-    private LocalDate bidata;
-
     @Column(name = "profissao", length = 50)
     private String profissao;
 
@@ -78,9 +69,6 @@ public class Student {
                    String nbeneficia,
                    Sexo sexo,
                    LocalDate datanascim,
-                   String binum,
-                   String biemissao,
-                   LocalDate bidata,
                    String profissao,
                    EstadoCivil estadocivi,
                    String telemovel,
@@ -92,9 +80,6 @@ public class Student {
         this.nbeneficia = nbeneficia;
         this.sexo = sexo;
         this.datanascim = datanascim;
-        this.binum = binum;
-        this.biemissao = biemissao;
-        this.bidata = bidata;
         this.profissao = profissao;
         this.estadocivi = estadocivi;
         this.telemovel = telemovel;

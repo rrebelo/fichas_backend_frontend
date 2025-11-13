@@ -188,25 +188,6 @@
             <span>Entidade</span>
             <input v-model.trim="form.entidade" />
           </label>
-          <div class="form__field form__field--full">
-            <button class="btn btn--secondary" type="button" @click="toggleBiFields">
-              {{ showBiFields ? 'Esconder dados do BI' : 'Mostrar dados do BI' }}
-            </button>
-          </div>
-          <template v-if="showBiFields">
-            <label class="form__field">
-              <span>Nº BI</span>
-              <input v-model.trim="form.binum" />
-            </label>
-            <label class="form__field">
-              <span>BI - Data</span>
-              <input v-model.trim="form.bidata" placeholder="dd/mm/aaaa" inputmode="numeric" maxlength="10" />
-            </label>
-            <label class="form__field">
-              <span>BI - Emissão</span>
-              <input v-model.trim="form.biemissao" />
-            </label>
-          </template>
         </div>
 
         <label class="form__field form__field--full">
@@ -284,7 +265,6 @@ const isUnlocked = ref(false);
 const accessCode = ref('');
 const accessError = ref('');
 const unlocking = ref(false);
-const showBiFields = ref(false);
 const PAGE_SIZE = 15;
 const currentPage = ref(1);
 
@@ -312,9 +292,6 @@ const form = reactive({
   nbeneficia: '',
   sexo: '',
   datanascim: '',
-  binum: '',
-  biemissao: '',
-  bidata: '',
   profissao: '',
   estadocivi: '',
   telemovel: '',
@@ -381,25 +358,6 @@ const pageSummary = computed(() => {
   return `${start}-${end} de ${total}`;
 });
 
-const toggleBiFields = () => {
-  showBiFields.value = !showBiFields.value;
-};
-
-let biFieldsAutoExpanded = false;
-watch(
-  () => [form.binum, form.bidata, form.biemissao],
-  (values) => {
-    if (biFieldsAutoExpanded) {
-      return;
-    }
-    if (values.some((value) => (value ?? '').toString().trim().length)) {
-      showBiFields.value = true;
-      biFieldsAutoExpanded = true;
-    }
-  },
-  { immediate: true }
-);
-
 const markBaseline = () => {
   lastSavedState.value = snapshotForm();
 };
@@ -413,17 +371,12 @@ const resetForm = () => {
   form.nbeneficia = '';
   form.sexo = '';
   form.datanascim = '';
-  form.binum = '';
-  form.biemissao = '';
-  form.bidata = '';
   form.profissao = '';
   form.estadocivi = '';
   form.telemovel = '';
   form.obs = '';
   formError.value = '';
   formSuccess.value = '';
-  showBiFields.value = false;
-  biFieldsAutoExpanded = false;
   markBaseline();
 };
 
@@ -436,9 +389,6 @@ const populateForm = (student) => {
   form.nbeneficia = student.nbeneficia ?? '';
   form.sexo = student.sexo ?? '';
   form.datanascim = isoToDisplayDate(student.datanascim);
-  form.binum = student.binum ?? '';
-  form.biemissao = student.biemissao ?? '';
-  form.bidata = isoToDisplayDate(student.bidata);
   form.profissao = student.profissao ?? '';
   form.estadocivi = student.estadocivi ?? '';
   form.telemovel = student.telemovel ?? '';
@@ -514,9 +464,6 @@ const serializePayload = () => ({
   nbeneficia: form.nbeneficia || null,
   sexo: form.sexo || null,
   datanascim: displayToIsoDate(form.datanascim),
-  binum: form.binum || null,
-  biemissao: form.biemissao || null,
-  bidata: displayToIsoDate(form.bidata),
   profissao: form.profissao || null,
   estadocivi: form.estadocivi || null,
   telemovel: form.telemovel || null,
@@ -700,3 +647,4 @@ watch(students, () => {
   text-align: center;
 }
 </style>
+
