@@ -41,6 +41,9 @@
           <button class="btn btn--ghost" type="button" @click="fetchStudents" :disabled="loading">
             {{ loading ? 'A atualizar…' : 'Recarregar' }}
           </button>
+          <button class="btn btn--secondary" type="button" @click="clearFilters" :disabled="!hasFilters">
+            Limpar filtros
+          </button>
         </div>
       </div>
 
@@ -185,18 +188,25 @@
             <span>Entidade</span>
             <input v-model.trim="form.entidade" />
           </label>
-          <label class="form__field">
-            <span>Nº BI</span>
-            <input v-model.trim="form.binum" />
-          </label>
-          <label class="form__field">
-            <span>BI - Data</span>
-            <input v-model.trim="form.bidata" placeholder="dd/mm/aaaa" inputmode="numeric" maxlength="10" />
-          </label>
-          <label class="form__field">
-            <span>BI - Emissão</span>
-            <input v-model.trim="form.biemissao" />
-          </label>
+          <div class="form__field form__field--full">
+            <button class="btn btn--secondary" type="button" @click="toggleBiFields">
+              {{ showBiFields ? 'Esconder dados do BI' : 'Mostrar dados do BI' }}
+            </button>
+          </div>
+          <template v-if="showBiFields">
+            <label class="form__field">
+              <span>Nº BI</span>
+              <input v-model.trim="form.binum" />
+            </label>
+            <label class="form__field">
+              <span>BI - Data</span>
+              <input v-model.trim="form.bidata" placeholder="dd/mm/aaaa" inputmode="numeric" maxlength="10" />
+            </label>
+            <label class="form__field">
+              <span>BI - Emissão</span>
+              <input v-model.trim="form.biemissao" />
+            </label>
+          </template>
         </div>
 
         <label class="form__field form__field--full">
@@ -274,6 +284,7 @@ const isUnlocked = ref(false);
 const accessCode = ref('');
 const accessError = ref('');
 const unlocking = ref(false);
+const showBiFields = ref(false);
 const PAGE_SIZE = 15;
 const currentPage = ref(1);
 
@@ -370,6 +381,25 @@ const pageSummary = computed(() => {
   return `${start}-${end} de ${total}`;
 });
 
+const toggleBiFields = () => {
+  showBiFields.value = !showBiFields.value;
+};
+
+let biFieldsAutoExpanded = false;
+watch(
+  () => [form.binum, form.bidata, form.biemissao],
+  (values) => {
+    if (biFieldsAutoExpanded) {
+      return;
+    }
+    if (values.some((value) => (value ?? '').toString().trim().length)) {
+      showBiFields.value = true;
+      biFieldsAutoExpanded = true;
+    }
+  },
+  { immediate: true }
+);
+
 const markBaseline = () => {
   lastSavedState.value = snapshotForm();
 };
@@ -392,6 +422,8 @@ const resetForm = () => {
   form.obs = '';
   formError.value = '';
   formSuccess.value = '';
+  showBiFields.value = false;
+  biFieldsAutoExpanded = false;
   markBaseline();
 };
 
@@ -668,4 +700,3 @@ watch(students, () => {
   text-align: center;
 }
 </style>
-
